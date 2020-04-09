@@ -1,0 +1,69 @@
+[user]
+	email = pierluc.boudreau@gmail.com
+	name = Pier-Luc Boudreau
+  
+[core]
+	autocrlf = true
+	editor = vi
+
+[alias]
+    # basic {{{
+    st = status -s
+    cl = clone
+    ci = commit
+    co = checkout
+    br = branch
+    r = reset
+    cp = cherry-pick
+    gr = grep -Ii
+    rim = rebase -i master
+    cix = commit -a --fixup HEAD~1
+    # }}}
+    # tweak defaults {{{
+    diff = diff --word-diff
+    branch = branch -ra
+    grep = grep -Ii
+    bra = branch -ra
+    ai = add --interactive
+    # grep on filename
+    f = "!git ls-files | grep -i"
+    # }}}
+    # commit {{{
+    cm = commit -m
+    cma = commit -a -m
+    ca = commit --amend
+    amend = commit --amend
+    caa = commit -a --amend -C HEAD
+    # }}}
+    # log commands {{{
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate --date=relative
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [a:%an,c:%cn]" --decorate --numstat
+    lc  = "!f() { git ll "$1"^.."$1"; }; f"
+    lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+    fl = log -u
+    filelog = log -u
+    # }}}
+    sl = stash list
+    sa = stash apply
+    ss = stash save
+
+    # conflict/merges
+    ours = "!f() { git co --ours $@ && git add $@; }; f"
+    theirs = "!f() { git co --theirs $@ && git add $@; }; f"
+
+    #list remotes
+    rem="!git config -l | grep remote.*url | tail -n +2"
+
+    #apply patch from other local repo
+    lap = "!f() { git --git-dir=$1 format-patch -k -1 --stdout $2 | git am -3 -k; }; f"
+
+    #open markdown files edited in last commit
+    last = "!gvim $(git show HEAD --format="" --name-only | grep -e .*md$ | xargs)"
+    #open just created markdown in working directory
+    newmd = "!gvim $(git status -s | awk {'print $2'})"
+
+    # initial empty commit
+    empty = "!git commit -am\"[empty] Initial commit\" --allow-empty"
+
+[rebase]
+  autosquash = true
